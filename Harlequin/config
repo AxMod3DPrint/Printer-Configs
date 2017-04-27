@@ -1,0 +1,276 @@
+#########################################################################
+#																		#
+#					FB2020 Re-Arm Smoothie Config						#
+#																		#
+# 	Pin Options:														#
+#		!	invert pin													#
+# 		o	set pin to open drain										#
+# 		^	set pin to pull up											#
+# 		v	set pin to pull down										#
+# 		-	to set no pullup											#
+# 		@ to set repeater mode											#
+#																		#
+#########################################################################
+
+
+
+﻿# Robot module configurations : general handling of movement G-codes and slicing into moves
+#-------------------------------------------------------------------------
+default_feed_rate									4800					# Default rate ( mm/minute ) for G1/G2/G3 moves
+default_seek_rate									4800					# Default rate ( mm/minute ) for G0 moves
+mm_per_arc_segment									0.1						# Arcs are cut into segments ( lines ), this is the length for these segments.  Smaller values mean more resolution, higher values mean faster computation
+#mm_per_line_segment								5						# Lines can be cut into segments ( not usefull with cartesian coordinates robots ).
+
+
+# Arm solution configuration : Cartesian robot. Translates mm positions into stepper positions
+#-------------------------------------------------------------------------
+arm_solution										corexy					#
+alpha_steps_per_mm									160						# Steps per mm for alpha (X) stepper
+beta_steps_per_mm									160						# Steps per mm for beta (Y) stepper
+gamma_steps_per_mm									3175.86					# Steps per mm for gamma (Z) stepper
+
+# Planner module configuration : Look-ahead and acceleration configuration
+#-------------------------------------------------------------------------
+planner_queue_size									32						# DO NOT CHANGE THIS UNLESS YOU KNOW EXACTLY WHAT YOUR ARE DOING
+acceleration										3600					# Acceleration in mm/second/second.
+#z_acceleration										500						# Acceleration for Z only moves in mm/s^2, 0 disables it, disabled by default. DO NOT SET ON A DELTA
+acceleration_ticks_per_second						1000					# Number of times per second the speed is updated
+junction_deviation									0.05					# Similar to the old "max_jerk", in millimeters, see : https://github.com/grbl/grbl/blob/master/planner.c#L409
+																			# and https://github.com/grbl/grbl/wiki/Configuring-Grbl-v0.8 . Lower values mean being more careful, higher values means being faster and have more jerk
+
+# Stepper module configuration
+#-------------------------------------------------------------------------
+microseconds_per_step_pulse							1						# Duration of step pulses to stepper drivers, in microseconds
+base_stepping_frequency								100000					# Base frequency for stepping
+
+
+# Stepper module pins ( ports, and pin numbers, appending "!" to the number will invert a pin )
+#-------------------------------------------------------------------------
+alpha_step_pin                               		2.1						# Pin for alpha stepper step signal
+alpha_dir_pin										0.11					# Pin for alpha stepper direction
+alpha_en_pin										0.10					# Pin for alpha enable pin 0.10
+alpha_current										1.0						# X stepper motor current
+x_axis_max_speed									18000					# mm/min
+alpha_max_rate										18000.0					# mm/min actuator max speed
+
+beta_step_pin										2.2						# Pin for beta stepper step signal
+beta_dir_pin										0.20					# Pin for beta stepper direction
+beta_en_pin											0.19					# Pin for beta enable
+beta_current										1.0						# Y stepper motor current
+y_axis_max_speed									18000					# mm/min
+beta_max_rate										18000.0					# mm/min actuator max speed
+
+gamma_step_pin										2.3						# Pin for gamma stepper step signal
+gamma_dir_pin										0.22					# Pin for gamma stepper direction
+gamma_en_pin										0.21					# Pin for gamma enable
+gamma_current										1.0						# Z stepper motor current
+z_axis_max_speed									300						# mm/min
+gamma_max_rate										300.0					# mm/min actuator max speed
+
+
+# Serial communications configuration ( baud rate default to 9600 if undefined )
+#-------------------------------------------------------------------------
+uart0.baud_rate                              		115200           		# Baud rate for the default hardware serial port
+second_usb_serial_enable                     		false            		# This enables a second usb serial port (to have both pronterface and a terminal connected)
+#msd_disable                                 		false            		# disable the MSD (USB SDCARD) when set to true
+
+
+# Extruder module configuration
+#-------------------------------------------------------------------------
+extruder.DrakonT0.enable							true					# Whether to activate the extruder module at all. All configuration is ignored if false
+extruder.DrakonT0.steps_per_mm						850						# Steps per mm for extruder stepper
+extruder.DrakonT0.default_feed_rate					3000					# Default rate ( mm/minute ) for moves where only the extruder moves
+extruder.DrakonT0.acceleration						3600					# Acceleration for the stepper motor mm/sec²
+extruder.DrakonT0.max_speed							50						# mm/s
+extruder.DrakonT0.step_pin							2.0						# Pin for extruder step signal
+extruder.DrakonT0.dir_pin							0.5						# Pin for extruder dir signal
+extruder.DrakonT0.en_pin							0.4						# Pin for extruder enable signal
+delta_current										1.0						# Extruder stepper motor current
+
+
+# Hotend temperature control configuration
+#-------------------------------------------------------------------------
+temperature_control.hotend.enable					true					# Whether to activate this ( "hotend" ) module at all. All configuration is ignored if false.
+temperature_control.hotend.thermistor_pin			0.23					# Pin for the thermistor to read
+temperature_control.hotend.heater_pin				2.5						# Pin that controls the heater
+temperature_control.hotend.thermistor				Semitec					# see http://smoothieware.org/temperaturecontrol#toc5
+
+temperature_control.hotend.set_m_code				104						#
+temperature_control.hotend.set_and_wait_m_code		109						#
+temperature_control.hotend.designator				T						#
+
+temperature_control.hotend.p_factor					33.0641					#
+temperature_control.hotend.i_factor					2.6504					#
+temperature_control.hotend.d_factor					103.1188				#
+temperature_control.hotend.max_temp					300						# Max Temp for Hotend
+
+
+#Bed temperature control configuration
+#-------------------------------------------------------------------------
+temperature_control.bed.enable						true					# Enable Heated bed
+temperature_control.bed.thermistor_pin				0.24					# Pin for the thermistor to read
+temperature_control.bed.heater_pin					2.7						# Pin that controls the heater
+temperature_control.hotend.thermistor				Semitec					# see http://smoothieware.org/temperaturecontrol#toc5
+
+temperature_control.bed.set_m_code					140           			#
+temperature_control.hotend.set_and_wait_m_code		190						#
+temperature_control.bed.designator					B						#
+
+temperature_control.bed.p_factor					198.2976				#
+temperature_control.bed.i_factor					9.9149					#
+temperature_control.bed.d_factor					991.4878				#
+
+temperature_control.bed.max_temp					130						# Max Bed Temp
+temperature_control.bed.pwm_frequency				20						# Low Frequency for SSR
+temperature_control.bed.max_pwm						255						# max pwm, 64 is a good value if driving a 12v resistor with 24v.
+
+
+# Switch module for layer fan control
+#-------------------------------------------------------------------------
+switch.layer_fan.enable									true				#
+switch.layer_fan.input_on_command						M106				#
+switch.layer_fan.input_off_command						M107				#
+switch.layer_fan.output_pin								2.4					#
+
+
+#Switch module for PSU
+#-------------------------------------------------------------------------
+switch.psu.enable									true					#
+switch.psu.input_on_command							M80						#
+switch.psu.input_off_command						M81						#
+switch.psu.output_pin								2.12!					#
+switch.psu.output_type 								digital					#
+switch.psu.fail_safe_set_to							false					#
+
+
+# turn the PSU off when the hotend temp cools below 50, only do this once M1100 S1 has been executed to arm it
+#-------------------------------------------------------------------------
+temperatureswitch.psu_off.enable					true					#
+temperatureswitch.psu_off.designator				T						# first character of the temperature control designator to use as the temperature sensor to monitor
+temperatureswitch.psu_off.switch					psu						# select which switch to use, matches the name of the defined switch
+temperatureswitch.psu_off.threshold_temp			50.0					# temperature to trigger at when falling
+temperatureswitch.psu_off.heatup_poll				30						# poll heatup every 30 seconds
+temperatureswitch.psu_off.cooldown_poll				30						# poll cooldown every 30 seconds
+temperatureswitch.psu_off.arm_mcode					1100					# M1100 S1 will arm it
+temperatureswitch.psu_off.trigger					falling					# only trigger when the temp falls below after being above
+temperatureswitch.psu_off.inverted					false					# turn the switch off when we trigger (by default switches on when rising and off when falling)
+
+
+# Endstops
+#-------------------------------------------------------------------------
+endstops_enable										true					# the endstop module is enabled by default and can be disabled here
+corexy_homing										true					# set to true if homing on a hbit or corexy
+alpha_min_endstop									1.24^!					# add a ! to invert if endstop is NO connected to ground
+alpha_homing_direction								home_to_min				# or set to home_to_max and set alpha_max
+alpha_min											-5						# this gets loaded after homing when home_to_min is set
+alpha_max											200						# this gets loaded after homing when home_to_max is set
+beta_max_endstop									1.27^!					#
+beta_homing_direction								home_to_max				#
+beta_min											0						#
+beta_max											200						#
+gamma_min_endstop									1.29^!					#
+gamma_homing_direction								home_to_min				#
+gamma_min											0						#
+gamma_max											170						#
+endstop_debounce_count								100						# uncomment if you get noise on your endstops, default is 100
+
+
+# Z Probe & Levelling
+#-------------------------------------------------------------------------
+zprobe.enable										true					# set to true to enable a zprobe
+zprobe.probe_pin									1.28!^					# pin probe is attached to if NC remove the !, Azteeg X5 this is 1.29
+zprobe.slow_feedrate								2						# mm/sec probe feed rate
+zprobe.debounce_ms									1						# set if noisy
+zprobe.fast_feedrate								30						# move feedrate
+zprobe.probe_height									5						# how much above bed to start probe NB only needed for G32 on delta
+zprobe.return_feedrate								0						# feedrate after a probe, default 0 is double of slow_feedrate (mm/s)
+
+leveling-strategy.rectangular-grid.enable			true					# The strategy must be enabled in the config, as well as the zprobe module.
+leveling-strategy.rectangular-grid.x_size			200						# size of bed in the X axis
+leveling-strategy.rectangular-grid.y_size			200						# size of bed in the Y axis
+leveling-strategy.rectangular-grid.size				7						# The size of the grid, for example, 7 causes a 7x7 grid with 49 points. Must be an odd number.
+leveling-strategy.rectangular-grid.probe_offsets	0,0,0					# Optional probe offsets from the nozzle or tool head
+leveling-strategy.rectangular-grid.save				true					# If the saved grid is to be loaded on boot then this must be set to true
+leveling-strategy.rectangular-grid.initial_height	75						# Optionally an initial_height can be set that tell the intial probe where to stop the fast decent before it probes
+
+
+#Homing Speeds
+#-------------------------------------------------------------------------
+alpha_fast_homing_rate_mm_s							80						# feedrates in mm/second
+beta_fast_homing_rate_mm_s							80						# "
+gamma_fast_homing_rate_mm_s							5						# "
+alpha_slow_homing_rate_mm_s							50						# "
+beta_slow_homing_rate_mm_s							50						# "
+gamma_slow_homing_rate_mm_s							2.5						# "
+alpha_homing_retract_mm								5						# How much to bounce off endstop - distance in mm
+beta_homing_retract_mm								5						# "
+gamma_homing_retract_mm								1						# "
+
+# Pause button
+#-------------------------------------------------------------------------
+pause_button_enable									false					#
+kill_button_enable									false					#
+kill_button_pin										2.11					#
+
+# LCD Panel See http://smoothieware.org/panel
+#-------------------------------------------------------------------------
+panel.enable										true					# set to true to enable the panel code
+panel.lcd											reprap_discount_glcd	# set type of panel
+panel.spi_channel									0						# set spi channel to use P0_18,P0_15 MOSI,SCLK
+panel.spi_cs_pin									0.16					# set spi chip select
+panel.encoder_a_pin									3.25!^					# encoder pin
+panel.encoder_b_pin									3.26!^					# encoder pin
+panel.click_button_pin								2.11!^					# click button
+panel.encoder_resolution							4						# override number of clicks to move 1 item (default is 4)
+panel.buzz_pin										1.30					# pin for buzzer on EXP2
+panel.external_sd									true					# set to true if there is an extrernal sdcard on the panel
+panel.external_sd.spi_channel						0						# set spi channel the sdcard is on
+panel.external_sd.spi_cs_pin						1.23					# set spi chip select for the sdcard
+panel.external_sd.sdcd_pin							1.31!^					# sd detect signal (set to nc if no sdcard detect)
+panel.menu_offset									1						# some panels will need 1 here# disable buzzer
+panel.hotend_temperature							225						# temp to set hotend when preheat is selected
+panel.bed_temperature								95						# temp to set bed when preheat is selected
+
+# LDC Custom Menu Entries
+# NOTE _ gets converted to space in the menu and commands, | is used to separate multiple commands
+#------------------------------------------------------------------------
+custom_menu.power_on.enable							true					#
+custom_menu.power_on.name							Power_On				#
+custom_menu.power_on.command						M80						#
+
+custom_menu.power_off.enable						true					#
+custom_menu.power_off.name							Power_Off				#
+custom_menu.power_off.command						M81						#
+
+custom_menu.probe.enable							true					#
+custom_menu.probe.name								Probe_Bed				#
+custom_menu.probe.command							G32						#
+
+custom_menu.probe_save.enable						true					#
+custom_menu.probe_save.name							Save_Grid				#
+custom_menu.probe_save.command						M374|M500				#
+
+custom_menu.PID_Hotend.enable						true					#
+custom_menu.PID_Hotend.name							PID_Tune_Hot_End		#
+custom_menu.PID_Hotend.command						M303E0S225				#
+
+custom_menu.PID_Bed.enable							true					#
+custom_menu.PID_Bed.name							PID_Tune_Bed			#
+custom_menu.PID_Bed.command							M303E1S95				#
+
+custom_menu.save.enable								true					#
+custom_menu.save.name								Save_Override			#
+custom_menu.save.command							M500					#
+
+custom_menu.delete.enable							true					#
+custom_menu.delete.name								Delete_Override			#
+custom_menu.delete.command							M502|reset				#
+
+
+# RE-ARM specific settings - DO NOT CHANGE
+#------------------------------------------------------------------------
+currentcontrol_module_enable						false					#
+digipot_max_current									2.4						# max current
+digipot_factor										106.0					# factor for converting current to digipot value
+leds_disable										true					# disable using leds after config loaded
+return_error_on_unhandled_gcode						false		            #

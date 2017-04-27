@@ -272,7 +272,7 @@ custom_menu.autotuneabort.command	M304				#
 
 
 # network settings
-network.enable false #                      true 	            # enable the ethernet network services
+network.enable 			                    true 	            # enable the ethernet network services
 network.webserver.enable                    true				# enable the webserver
 network.ip_address                          192.168.0.103		# the IP address
 network.ip_mask         					255.255.255.0		# Netmask

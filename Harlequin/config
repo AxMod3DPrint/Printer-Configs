@@ -113,7 +113,7 @@ temperature_control.bed.heater_pin					2.7						# Pin that controls the heater
 temperature_control.hotend.thermistor				Semitec					# see http://smoothieware.org/temperaturecontrol#toc5
 
 temperature_control.bed.set_m_code					140           			#
-temperature_control.hotend.set_and_wait_m_code		190						#
+temperature_control.bed.set_and_wait_m_code			190						#
 temperature_control.bed.designator					B						#
 
 temperature_control.bed.p_factor					198.2976				#

@@ -32,23 +32,23 @@ base_stepping_frequency                      100000           # Base frequency f
 alpha_step_pin                               2.1              # Pin for alpha stepper step signal
 alpha_dir_pin                                0.11             # Pin for alpha stepper direction
 alpha_en_pin                                 0.10             # Pin for alpha enable pin
-alpha_current 1.2 #		 0.9			  # X stepper motor current
-alpha_max_rate                               30000.0          # mm/min actuator max speed
-x_axis_max_speed                             30000.0          # mm/min cartesian max speed
+alpha_current                                1.2              # X stepper motor current
+alpha_max_rate                               18000.0          # mm/min actuator max speed
+x_axis_max_speed                             18000.0          # mm/min cartesian max speed
 
 beta_step_pin                                2.2              # Pin for beta stepper step signal
 beta_dir_pin                                 0.20             # Pin for beta stepper direction
 beta_en_pin                                  0.19             # Pin for beta enable
-beta_current 1.2 #                        0.9              # Y stepper motor current
-beta_max_rate                                30000.0          # mm/min
-y_axis_max_speed                             30000.0          # mm/min
+beta_current                                 1.2              # Y stepper motor current
+beta_max_rate                                18000.0          # mm/min
+y_axis_max_speed                             18000.0          # mm/min
 
 gamma_step_pin                               2.3              # Pin for gamma stepper step signal
 gamma_dir_pin                                0.22             # Pin for gamma stepper direction
 gamma_en_pin                                 0.21             # Pin for gamma enable
-gamma_current 1.2 #                        0.9              # Z stepper motor current
-gamma_max_rate                               30000.0          # mm/min
-z_axis_max_speed                             30000.0          # mm/min
+gamma_current                                1.2              #Z stepper motor current
+gamma_max_rate                               18000.0          # mm/min
+z_axis_max_speed                             18000.0          # mm/min
 
 # Serial communications configuration ( baud rate default to 9600 if undefined )
 uart0.baud_rate                              115200           # Baud rate for the default hardware serial port
@@ -63,7 +63,7 @@ extruder.hotend.enable                          true             # Whether to ac
 extruder.hotend.steps_per_mm                    900.6747         # Steps per mm for extruder stepper
 extruder.hotend.default_feed_rate               2400             # Default rate ( mm/minute ) for moves where only the extruder moves
 extruder.hotend.acceleration                    3600             # Acceleration for the stepper motor mm/sec²
-extruder.hotend.max_speed 80 #                  45               # mm/s
+extruder.hotend.max_speed	                    50               # mm/s
 
 extruder.hotend.step_pin                        2.0              # Pin for extruder step signal
 extruder.hotend.dir_pin                         0.5!             # Pin for extruder dir signal
@@ -121,6 +121,7 @@ temperature_control.bed.d_factor          599.2267            #
 temperature_control.bed.set_m_code           140              #
 temperature_control.bed.set_and_wait_m_code  190              #
 temperature_control.bed.designator           B                #
+temperature_control.bed.pwm_frequency         20         # added
 # uncomment followng to use bang bang isntead of PID for the bed (best for relay conrolled hotbeds)
 #temperature_control.bed.bang_bang            true             # set to true to use bang bang control rather than PID
 #temperature_control.bed.hysteresis           2.0              # set to the temperature in degrees C to use as hysteresis when using bang bang
@@ -136,6 +137,19 @@ switch.psu.enable                            true             # turn atx on/off
 switch.psu.input_on_command                  M80              #
 switch.psu.input_off_command                 M81              #
 switch.psu.output_pin                        0.26             #
+
+# turn the PSU off when the hotend temp cools below 50, only do this once M1100 S1 has been executed to arm it
+#-------------------------------------------------------------------------
+temperatureswitch.psu_off.enable					true					#
+temperatureswitch.psu_off.designator				T						# first character of the temperature control designator to use as the temperature sensor to monitor
+temperatureswitch.psu_off.switch					psu						# select which switch to use, matches the name of the defined switch
+temperatureswitch.psu_off.threshold_temp			50.0					# temperature to trigger at when falling
+temperatureswitch.psu_off.heatup_poll				30						# poll heatup every 30 seconds
+temperatureswitch.psu_off.cooldown_poll				30						# poll cooldown every 30 seconds
+temperatureswitch.psu_off.arm_mcode					1100					# M1100 S1 will arm it
+temperatureswitch.psu_off.trigger					falling					# only trigger when the temp falls below after being above
+temperatureswitch.psu_off.inverted					false					# turn the switch off when we trigger (by default switches on when rising and off when falling)
+
 
 # Endstops
 endstops_enable                              true             # the endstop module is enabled by default and can be disabled here
@@ -272,7 +286,7 @@ custom_menu.autotuneabort.command	M304				#
 
 
 # network settings
-network.enable 			                    true 	            # enable the ethernet network services
+network.enable                              false 	            # enable the ethernet network services
 network.webserver.enable                    true				# enable the webserver
 network.ip_address                          192.168.0.103		# the IP address
 network.ip_mask         					255.255.255.0		# Netmask
@@ -285,4 +299,4 @@ currentcontrol_module_enable                 true            #
 digipot_max_current                          2.0             # max current
 digipot_factor                               113.5           # factor for converting current to digipot value
 
-temperature_control.bed.pwm_frequency         20         # added
+

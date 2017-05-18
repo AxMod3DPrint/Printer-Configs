@@ -81,7 +81,7 @@ extruder.DrakonT0.enable							true					# Whether to activate the extruder modul
 extruder.DrakonT0.steps_per_mm						850						# Steps per mm for extruder stepper
 extruder.DrakonT0.default_feed_rate					3000					# Default rate ( mm/minute ) for moves where only the extruder moves
 extruder.DrakonT0.acceleration						3600					# Acceleration for the stepper motor mm/sec²
-extruder.DrakonT0.max_speed							50						# mm/s
+extruder.DrakonT0.max_speed							100						# mm/s
 extruder.DrakonT0.step_pin							2.0						# Pin for extruder step signal
 extruder.DrakonT0.dir_pin							0.5						# Pin for extruder dir signal
 extruder.DrakonT0.en_pin							0.4						# Pin for extruder enable signal
@@ -120,7 +120,7 @@ temperature_control.bed.p_factor					198.2976				#
 temperature_control.bed.i_factor					9.9149					#
 temperature_control.bed.d_factor					991.4878				#
 
-temperature_control.bed.max_temp					130						# Max Bed Temp
+temperature_control.bed.max_temp					140						# Max Bed Temp
 temperature_control.bed.pwm_frequency				20						# Low Frequency for SSR
 temperature_control.bed.max_pwm						255						# max pwm, 64 is a good value if driving a 12v resistor with 24v.
 
@@ -274,3 +274,5 @@ digipot_max_current									2.4						# max current
 digipot_factor										106.0					# factor for converting current to digipot value
 leds_disable										true					# disable using leds after config loaded
 return_error_on_unhandled_gcode						false		            #
+
+

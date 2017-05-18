@@ -12,7 +12,7 @@ M203.1 X300.00000 Y300.00000 Z5.00000
 ;WCS settings
 G54
 ;Home offset (mm):
-M206 X0.00 Y0.00 Z2.25 
+M206 X0.00 Y0.00 Z0.31 
 ;E Steps per mm:
 M92 E850.0000 P34533
 ;E Filament diameter:
@@ -26,7 +26,7 @@ M204 E3600.0000 P34533
 ;E max feed rate mm/sec:
 M203 E50.0000 P34533
 ;PID settings:
-M301 S0 P52.4838 I4.2497 D162.0438 X255.0000 Y255
+M301 S0 P40.4646 I3.8538 D106.2197 X255.0000 Y255
 ;Max temperature setting:
 M143 S0 P300.0000
 ;PID settings:

@@ -174,7 +174,7 @@ beta_fast_homing_rate_mm_s                   80               # "
 gamma_fast_homing_rate_mm_s                  20                # "
 alpha_slow_homing_rate_mm_s                  50               # "
 beta_slow_homing_rate_mm_s                   50               # "
-gamma_slow_homing_rate_mm_s                  10                # "
+gamma_slow_homing_rate_mm_s                  3                # "
 
 
 alpha_homing_retract_mm                      5                # distance in mm

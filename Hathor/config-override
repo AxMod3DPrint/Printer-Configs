@@ -14,9 +14,9 @@ G54
 ;Digipot Motor currents:
 M907 X1.00000 Y1.00000 Z1.00000 A1.00000 
 ;Home offset (mm):
-M206 X0.00 Y0.00 Z0.05 
+M206 X0.00 Y0.00 Z-0.25 
 ;E Steps per mm:
-M92 E865.8008 P57988
+M92 E876.2886 P57988
 ;E Filament diameter:
 M200 D0.0000 P57988
 ;E retract length, feedrate:

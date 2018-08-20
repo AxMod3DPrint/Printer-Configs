@@ -15,7 +15,7 @@ planner_queue_size                           32               # DO NOT CHANGE TH
 acceleration                                 3600             # Acceleration in mm/second/second.
 #z_acceleration                              500              # Acceleration for Z only moves in mm/s^2, 0 disables it, disabled by default. DO NOT SET ON A DELTA
 acceleration_ticks_per_second                1000             # Number of times per second the speed is updated
-junction_deviation                           0.05             # Similar to the old "max_jerk", in millimeters, see : https://github.com/grbl/grbl/blob/master/planner.c#L409
+junction_deviation                           0.02             # Similar to the old "max_jerk", in millimeters, see : https://github.com/grbl/grbl/blob/master/planner.c#L409
                                                               # and https://github.com/grbl/grbl/wiki/Configuring-Grbl-v0.8 . Lower values mean being more careful, higher values means being faster and have more jerk
 
 # Stepper module configuration
@@ -41,21 +41,21 @@ gamma_step_pin                               2.3              # Pin for gamma st
 gamma_dir_pin                                0.22             # Pin for gamma stepper direction
 gamma_en_pin                                 0.21             # Pin for gamma enable
 gamma_current                                1.0              # Z stepper motor current
-z_axis_max_speed                             1200              # mm/min
+z_axis_max_speed                             600              # mm/min
 gamma_max_rate                               1200.0            # mm/min actuator max speed
 
 # Serial communications configuration ( baud rate default to 9600 if undefined )
-uart0.baud_rate                              230400           # Baud rate for the default hardware serial port
+uart0.baud_rate                              115200           # Baud rate for the default hardware serial port
 second_usb_serial_enable                     false            # This enables a second usb serial port (to have both pronterface and a terminal connected)
 #msd_disable                                 false            # disable the MSD (USB SDCARD) when set to true
 
 
 # Extruder module configuration
 extruder.hotend.enable                          true             # Whether to activate the extruder module at all. All configuration is ignored if false
-extruder.hotend.steps_per_mm                    146              # Steps per mm for extruder stepper
-extruder.hotend.default_feed_rate			    12000              # Default rate ( mm/minute ) for moves where only the extruder moves
+extruder.hotend.steps_per_mm                    851.681885268              # Steps per mm for extruder stepper
+extruder.hotend.default_feed_rate			    3000              # Default rate ( mm/minute ) for moves where only the extruder moves
 extruder.hotend.acceleration                    3600              # Acceleration for the stepper motor mm/sec²
-extruder.hotend.max_speed                       200               # mm/s
+extruder.hotend.max_speed                       50               # mm/s
 
 extruder.hotend.step_pin                        2.0              # Pin for extruder step signal
 extruder.hotend.dir_pin                         0.5             # Pin for extruder dir signal
@@ -169,11 +169,11 @@ gamma_max                                    170              #
 #probe endstop
 #probe_pin                                   1.29             # optional pin for probe
 
-alpha_fast_homing_rate_mm_s                  80               # feedrates in mm/second
-beta_fast_homing_rate_mm_s                   80               # "
-gamma_fast_homing_rate_mm_s                  20                # "
-alpha_slow_homing_rate_mm_s                  50               # "
-beta_slow_homing_rate_mm_s                   50               # "
+alpha_fast_homing_rate_mm_s                  50               # feedrates in mm/second
+beta_fast_homing_rate_mm_s                   50               # "
+gamma_fast_homing_rate_mm_s                  10                # "
+alpha_slow_homing_rate_mm_s                  10               # "
+beta_slow_homing_rate_mm_s                   10               # "
 gamma_slow_homing_rate_mm_s                  3                # "
 
 
@@ -199,67 +199,12 @@ leveling-strategy.rectangular-grid.y_size			195						# size of bed in the Y axis
 leveling-strategy.rectangular-grid.size				7						# The size of the grid, for example, 7 causes a 7x7 grid with 49 points. Must be an odd number.
 leveling-strategy.rectangular-grid.probe_offsets	0,0,0					# Optional probe offsets from the nozzle or tool head
 leveling-strategy.rectangular-grid.save				true					# If the saved grid is to be loaded on boot then this must be set to true
-leveling-strategy.rectangular-grid.initial_height	17						# Optionally an initial_height can be set that tell the intial probe where to stop the fast decent before it probes
+leveling-strategy.rectangular-grid.initial_height	25						# Optionally an initial_height can be set that tell the intial probe where to stop the fast decent before it probes
 
 # Pause button
 pause_button_enable                         false				#
 kill_button_enable 							false				#
 #kill_button_pin 							2.11				#
-
-# config settings
-panel.enable                          false              # set to true to enable the panel code
-panel.lcd                             reprap_discount_glcd     # set type of panel
-panel.spi_channel                     0                 # spi channel to use  ; GLCD EXP1 Pins 3,5 (MOSI, SCLK)
-panel.spi_cs_pin                      0.16              # spi chip select     ; GLCD EXP1 Pin 4
-panel.encoder_a_pin                   3.26!^            # encoder pin         ; GLCD EXP2 Pin 3
-panel.encoder_b_pin                   3.25!^            # encoder pin         ; GLCD EXP2 Pin 5
-panel.click_button_pin                1.30!^            # click button        ; GLCD EXP1 Pin 2
-panel.buzz_pin                        1.31              # pin for buzzer      ; GLCD EXP1 Pin 1
-panel.back_button_pin                 1.23!^            # 2.11 menu back      ; GLCD EXP2 Pin 8
-# setup for external sd card on the GLCD which uses the onboard sdcard SPI port
-panel.external_sd                     false              # set to true if there is an extrernal sdcard on the panel
-panel.external_sd.spi_channel         1                 # set spi channel the sdcard is on
-panel.external_sd.spi_cs_pin          0.28              # set spi chip select for the sdcard (or any spare pin)
-panel.external_sd.sdcd_pin            0.27!^            # sd detect signal (set to nc if no sdcard detect) (or any spare pin)
-
-
-panel.hotend_temperature                     225               # temp to set hotend when preheat is selected
-panel.bed_temperature                        70                # temp to set bed when preheat is selected
-
-# Example of a custom menu entry, which will show up in the Custom entry.
-# NOTE _ gets converted to space in the menu and commands, | is used to separate multiple commands
-custom_menu.power_on.enable                true              #
-custom_menu.power_on.name                  Power_on          #
-custom_menu.power_on.command               M80               #
-
-custom_menu.power_off.enable               true              #
-custom_menu.power_off.name                 Power_off         #
-custom_menu.power_off.command              M81               #
-
-custom_menu.pre_load_T0.enable			   true					#
-custom_menu.pre_load_T0.name			   Pre_Load_T0			#
-custom_menu.pre_load_T0.command			   T0|G91|G1E20F90|G90	#
-
-custom_menu.pre_load_T1.enable			   true					#
-custom_menu.pre_load_T1.name			   Pre_Load_T1			#
-custom_menu.pre_load_T1.command			   T1|G91|G1E20F90|G90	#
-
-custom_menu.load_T0.enable				   true																									#
-custom_menu.load_T0.name			       Load_T0																								#
-custom_menu.load_T0.command			       T0|M117Heating...|M109S225|M117Loading...|G91|G1E400F12000|G1E250F12000|G1E50F300			#
-
-custom_menu.load_T1.enable				   true																									#
-custom_menu.load_T1.name			       Load_T1																								#
-custom_menu.load_T1.command			       T1|M117Heating...|M109S225|M117Loading...|G91|G1E400F12000|G1E250F12000|G1E50F300 			#
-
-custom_menu.unload_T0.enable			   true																						#
-custom_menu.unload_T0.name			       Unload_T0																				#
-custom_menu.unload_T0.command		       T0|M117Heating...|M109S225|M117Unloading...|G91|G1E10F300|G1E-5F10000|G1E2F10000|G1E-32F10000|G4P300|G1E-750F12000			#
-
-custom_menu.unload_T1.enable			   true																						#
-custom_menu.unload_T1.name			       Unload_T1																				#
-custom_menu.unload_T1.command		       T1|M117Heating...|M109S225|M117Unloading...|G91|G1E10F300|G1E-5F10000|G1E2F10000|G1E-32F10000|G4P300|G1E-750F12000				#
-
 
 # network settings
 network.enable                      true 	            # enable the ethernet network services
